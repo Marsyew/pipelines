@@ -34,3 +34,29 @@ class ChatPipeline:
         response = requests.post('http://localhost:8817/v1/chat/completions', headers=headers, data=json.dumps(data))
 
         return response.json()
+
+class Pipeline:
+    def __init__(self):
+        self.name = "comfyui_query"
+        self.chat_pipeline = ChatPipeline()
+
+    async def on_startup(self):
+        await self.chat_pipeline.on_startup()
+
+    async def on_shutdown(self):
+        await self.chat_pipeline.on_shutdown()
+
+    def pipe(self, user_message: str, model_id: str, messages: List[dict], body: dict) -> Union[str, Generator, Iterator]:
+        return self.chat_pipeline.pipe(user_message, model_id, messages, body)
+
+if __name__ == "__main__":
+    import asyncio
+    pipeline = Pipeline()
+    asyncio.run(pipeline.on_startup())
+    messages = [
+        {'role': 'system', 'content': 'You are a helpful assistant.'},
+        {'role': 'user', 'content': '查一下在深圳拍摄的照片'}
+    ]
+    result = pipeline.pipe("查一下在深圳拍摄的照片", 'test_model', messages, {})
+    print(result)
+    asyncio.run(pipeline.on_shutdown())
