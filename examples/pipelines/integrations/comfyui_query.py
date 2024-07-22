@@ -45,7 +45,7 @@ class Pipeline:
         }
 
         try:
-            response = requests.post('http://192.168.31.30:8816/v1/chat/completions', headers=headers, data=json.dumps(data))
+            response = requests.post('http://192.168.31.29:8817/v1/chat/completions', headers=headers, data=json.dumps(data))
             response.raise_for_status()  # Raise HTTPError for bad responses (4xx and 5xx)
             result = response.json()
             return json.dumps(result, indent=4)  # Format the response as a pretty JSON string
