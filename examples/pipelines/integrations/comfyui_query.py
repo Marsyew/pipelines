@@ -31,7 +31,7 @@ class ChatPipeline:
             'messages': messages
         }
 
-        response = requests.post('http://localhost:8817/v1/chat/completions', headers=headers, data=json.dumps(data))
+        response = requests.post('http://192.168.31.29:8817/v1/chat/completions', headers=headers, data=json.dumps(data))
 
         return response.json()
 
